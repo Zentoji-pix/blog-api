@@ -15,7 +15,7 @@ app.use((req, res, next) => {
     console.log(`${req.method}, ${req.url}, ${new Date}`)
     next()
 })
-
+    
 // timer middleware
 app.use( (req, res, next) => {
     let time = Date.now()
@@ -35,11 +35,11 @@ app.use('/articles', articleRoutes)
 
 app.use((err, req, res, next) =>{
     console.error(err.stack)
-    const status = error.statusCode || 500
+    const status = err.statusCode || 500
     res.status(status).json({error: err.message})
 })
 
-PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 3000
 app.listen(PORT, ()=>{
     console.log(`server is live at port ${PORT}`)
 })
