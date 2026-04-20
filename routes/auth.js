@@ -4,7 +4,6 @@ const router = express.Router()
 const user = require('../models/user')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const authWare = require('../middleware/authenticate')
 
 router.post('/signup', async (req, res, next) => {
     try{
@@ -18,7 +17,7 @@ router.post('/signup', async (req, res, next) => {
     }
 })
 
-router.post('/login', authWare, async (req, res, next) => {
+router.post('/login', async (req, res, next) => {
     try{
         const {username, password} = req.body
         const userData = await user.findOne({ username: username })
@@ -39,3 +38,5 @@ router.post('/login', authWare, async (req, res, next) => {
         next(err)
     }
 })
+
+module.exports = router

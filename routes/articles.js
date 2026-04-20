@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const articles = require('../models/articles')
+const authWare = require('../middleware/authenticate')
 
 const validator = (req, res, next) => {
     const {title, content, author} = req.body
@@ -13,7 +14,7 @@ next()
 }
 
 // create an article
-router.post('/', validator, async (req, res, next) => {
+router.post('/', authWare, validator, async (req, res, next) => {
     try{
         const newArticle = req.body
         const article = await articles.create(newArticle)
@@ -62,7 +63,7 @@ router.get('/:id', async (req, res, next) => {
 })
 
 // fetch by id and update
-router.patch('/:id', async (req, res, next) => {
+router.patch('/:id', authWare, async (req, res, next) => {
     try{ 
         const article = await articles.findByIdAndUpdate(req.params.id, req.body, {new: true})
         if (!article){
@@ -80,7 +81,7 @@ router.patch('/:id', async (req, res, next) => {
 })
 
 // fetch by id and delete
-router.delete('/:id', async (req, res, next) => {
+router.delete('/:id', authWare, async (req, res, next) => {
     try{ 
         const article = await articles.findByIdAndDelete(req.params.id)
         if (!article){
