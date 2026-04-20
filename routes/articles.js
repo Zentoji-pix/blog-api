@@ -34,7 +34,7 @@ function findArticle(queryString) {
 }
 
 // fetch all articles
-router.get('/', async (req, res, next) => {
+router.get('/', authWare, async (req, res, next) => {
     try{ 
         const filter = findArticle(req.query)
         const article = await articles.find(filter)
