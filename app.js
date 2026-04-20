@@ -4,6 +4,7 @@ const app = express()
 const cors = require('cors')
 const mongoose = require('mongoose')
 const articleRoutes = require('./routes/articles')
+const auth = require('./routes/auth')
 
 // Parsing middleware
 app.use(express.json())
@@ -38,6 +39,8 @@ app.use((err, req, res, next) =>{
     const status = err.statusCode || 500
     res.status(status).json({error: err.message})
 })
+
+app.use('/auth', auth)
 
 const PORT = process.env.PORT || 3000
 app.listen(PORT, ()=>{
