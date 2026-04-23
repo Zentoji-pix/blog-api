@@ -5,27 +5,18 @@ const cors = require('cors')
 const mongoose = require('mongoose')
 const articleRoutes = require('./routes/articles')
 const auth = require('./routes/auth')
+const logger = require('./middleware/logger')
+const timer = require('./middleware/timer')
 
 // Parsing middleware
 app.use(express.json())
 
 app.use(cors())
 
-// logging middleware
-app.use((req, res, next) => {
-    console.log(`${req.method}, ${req.url}, ${new Date}`)
-    next()
-})
-    
-// timer middleware
-app.use( (req, res, next) => {
-    let time = Date.now()
-    res.on('finish', () => {
-        time = new Date() - time
-        console.log(`Time taken: ${time} ms`)
-    })
-    next()
-})
+// middleware
+app.use(logger)
+
+app.use(timer)
 
 mongoose.connect(process.env.MONGO_URI)
     .then(() => {console.log('DB connected auccesfully')})
