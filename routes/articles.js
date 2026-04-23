@@ -4,6 +4,7 @@ const authWare = require('../middleware/authenticate')
 
 const validator = require('../middleware/validator')
 const controller = require('../controller/article')
+const upload = require('../middleware/upload')
 
 // create an article
 router.post('/', authWare, validator, controller.posting)
@@ -20,6 +21,9 @@ router.patch('/:id', authWare, controller.update)
 
 // fetch by id and delete
 router.delete('/:id', authWare, controller.del)
+
+//upload
+router.post('/upload', authWare, upload.single('file'), controller.uploadFile)
 
 
 module.exports = router

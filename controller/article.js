@@ -1,4 +1,6 @@
  const articles = require('../models/articles')
+
+
  const posting = async (req, res, next) => {
     try{
         const newArticle = req.body
@@ -80,4 +82,13 @@ const del = async (req, res, next) => {
 }
 }
 
-module.exports = {posting, getAll, getId, update, del} 
+const uploadFile = async (req, res, next) => {
+    try{
+        const {path, originalname} = req.file
+        res.status(201).json({ path, originalname })
+    }catch(err){
+        next(err)
+    }
+}
+
+module.exports = {posting, getAll, getId, update, del, uploadFile} 

@@ -7,7 +7,6 @@ const articleRoutes = require('./routes/articles')
 const auth = require('./routes/auth')
 const logger = require('./middleware/logger')
 const timer = require('./middleware/timer')
-
 // Parsing middleware
 app.use(express.json())
 
@@ -23,7 +22,9 @@ mongoose.connect(process.env.MONGO_URI)
     .catch((err) => {console.error(err)})
 
 
+app.use('/upload', express.static('uploads'))
 app.use('/articles', articleRoutes)
+app.use('/auth', auth)
 
 app.use((err, req, res, next) =>{
     console.error(err.stack)
@@ -31,7 +32,7 @@ app.use((err, req, res, next) =>{
     res.status(status).json({error: err.message})
 })
 
-app.use('/auth', auth)
+
 
 const PORT = process.env.PORT || 3000
 app.listen(PORT, ()=>{
